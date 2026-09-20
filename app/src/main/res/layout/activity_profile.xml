@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textProfile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="98dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="79dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/profile_profile"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewNameM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonEdit"
+        android:layout_width="160dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="35dp"
+        android:text="@string/edit_profile_profile"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackFromProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmailM" />
+
+    <Button
+        android:id="@+id/buttonBackFromProfile"
+        android:layout_width="160dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="112dp"
+        android:backgroundTint="#A6A5A5"
+        android:text="@string/back_from_profile"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonEdit" />
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="66dp"
+        android:text="@string/textview_name"
+        android:textAlignment="viewStart"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewNameM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewNameM" />
+
+    <TextView
+        android:id="@+id/textViewPhoneNumber"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="69dp"
+        android:text="@string/textviewPhone_number"
+        android:textAlignment="viewStart"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewPhoneNumberM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewPhoneNumberM" />
+
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:layout_marginEnd="66dp"
+        android:text="@string/textviewemail"
+        android:textAlignment="viewStart"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewEmailM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewEmailM" />
+
+    <TextView
+        android:id="@+id/textViewSurName"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="68dp"
+        android:text="@string/textview_surname"
+        android:textAlignment="viewStart"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textViewSurnameM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewSurnameM" />
+
+    <TextView
+        android:id="@+id/textViewEmailM"
+        android:layout_width="63dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="172dp"
+        android:text="@string/email_m"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonEdit"
+        app:layout_constraintEnd_toStartOf="@+id/textViewEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPhoneNumberM" />
+
+    <TextView
+        android:id="@+id/textViewSurnameM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="69dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="48dp"
+        android:text="@string/surname_m"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewPhoneNumberM"
+        app:layout_constraintEnd_toStartOf="@+id/textViewSurName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNameM" />
+
+    <TextView
+        android:id="@+id/textViewPhoneNumberM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="66dp"
+        android:text="@string/number_m"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewEmailM"
+        app:layout_constraintEnd_toStartOf="@+id/textViewPhoneNumber"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSurnameM" />
+
+    <TextView
+        android:id="@+id/textViewNameM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="69dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="44dp"
+        android:text="@string/name_m"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSurnameM"
+        app:layout_constraintEnd_toStartOf="@+id/textViewName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textProfile" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

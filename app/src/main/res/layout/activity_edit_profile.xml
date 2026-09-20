@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textEditProfile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="83dp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/edit_profile"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEditName"
+        app:layout_constraintEnd_toEndOf="@+id/editTextEditName"
+        app:layout_constraintStart_toStartOf="@+id/editTextEditName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextEditName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="29dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/name"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEditSurname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textEditProfile" />
+
+    <EditText
+        android:id="@+id/editTextEditEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="173dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/email"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSaveProfile"
+        app:layout_constraintStart_toStartOf="@+id/editTextEditPhone"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditPhone" />
+
+    <EditText
+        android:id="@+id/editTextEditPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="29dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/phone_number"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEditEmail"
+        app:layout_constraintStart_toStartOf="@+id/editTextEditSurname"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditSurname" />
+
+    <EditText
+        android:id="@+id/editTextEditSurname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="29dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/surname"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEditPhone"
+        app:layout_constraintStart_toStartOf="@+id/editTextEditName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditName" />
+
+    <Button
+        android:id="@+id/buttonSaveProfile"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="39dp"
+        android:text="@string/save"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBackFromEditProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEditEmail" />
+
+    <Button
+        android:id="@+id/buttonBackFromEditProfile"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="79dp"
+        android:backgroundTint="#A6A5A5"
+        android:text="@string/back_form_edit"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSaveProfile" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

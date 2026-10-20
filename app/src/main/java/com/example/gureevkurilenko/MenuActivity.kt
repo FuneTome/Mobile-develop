@@ -23,7 +23,6 @@ class MenuActivity : AppCompatActivity() {
             return
         }
 
-        // необязательно: добавить в activity_menu.xml TextView с id=textWelcome
         findViewById<TextView>(R.id.textWelcome).text = "Привет, ${user.fullName}"
 
         val buttonAdmin = findViewById<Button>(R.id.buttonAdmin)
@@ -51,6 +50,10 @@ class MenuActivity : AppCompatActivity() {
             session.logout()
             startActivity(Intent(this, WelcomeActivity::class.java))
             finish()
+        }
+
+        findViewById<Button>(R.id.buttonGame).setOnClickListener {
+            startActivity(Intent(this, GameActivity::class.java))
         }
     }
 }

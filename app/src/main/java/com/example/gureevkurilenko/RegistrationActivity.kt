@@ -1,6 +1,7 @@
 package com.example.gureevkurilenko
 
 import android.app.DatePickerDialog
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,8 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import java.io.File
+import java.io.FileOutputStream
 import java.util.Calendar
 
 class RegistrationActivity : AppCompatActivity() {
@@ -18,12 +21,13 @@ class RegistrationActivity : AppCompatActivity() {
     private lateinit var db: DatabaseHandler
     private var avatarUri: String = ""
 
-    private val pickImage = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            avatarUri = uri.toString()
-            findViewById<ImageView>(R.id.imageAvatar).setImageURI(uri)
+    private val takePicture = registerForActivityResult(
+        ActivityResultContracts.TakePicturePreview()
+    ) { bitmap: Bitmap? ->
+        if (bitmap != null) {
+            avatarUri = saveImageToInternalStorage(bitmap)
+            findViewById<ImageView>(R.id.imageAvatar).setImageBitmap(bitmap)
+            Log.d("RegistrationActivity", "Аватар сохранен по пути: $avatarUri")
         }
     }
 
@@ -42,7 +46,8 @@ class RegistrationActivity : AppCompatActivity() {
         val buttonRegister = findViewById<Button>(R.id.buttonRegister)
 
         editBirthDate.setOnClickListener { showDatePicker(editBirthDate) }
-        imageAvatar.setOnClickListener { pickImage.launch("image/*") }
+
+        imageAvatar.setOnClickListener { takePicture.launch(null) }
 
         buttonRegister.setOnClickListener {
             val login = editLogin.text.toString().trim()
@@ -93,5 +98,13 @@ class RegistrationActivity : AppCompatActivity() {
             { _, y, m, d -> target.setText(String.format("%02d.%02d.%04d", d, m + 1, y)) },
             c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+
+    private fun saveImageToInternalStorage(bitmap: Bitmap): String {
+        val file = File(filesDir, "avatar_${System.currentTimeMillis()}.jpg")
+        val stream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
+        stream.close()
+        return Uri.fromFile(file).toString()
     }
 }

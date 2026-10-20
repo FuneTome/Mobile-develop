@@ -101,6 +101,16 @@ class DatabaseHandler(context: Context) :
         )
     }
 
+    fun updateUserAvatar(id: Int, newAvatarUri: String) {
+        val values = ContentValues().apply {
+            put(DBContract.UserEntry.COLUMN_AVATAR_URI, newAvatarUri)
+        }
+        writableDatabase.update(
+            DBContract.UserEntry.TABLE_NAME, values,
+            "${DBContract.UserEntry.COLUMN_ID} = ?", arrayOf(id.toString())
+        )
+    }
+
     private fun cursorToUser(cursor: Cursor): User = User(
         id = cursor.getInt(cursor.getColumnIndexOrThrow(DBContract.UserEntry.COLUMN_ID)),
         login = cursor.getString(cursor.getColumnIndexOrThrow(DBContract.UserEntry.COLUMN_LOGIN)),

@@ -23,11 +23,14 @@ class ProfileActivity : AppCompatActivity() {
     ) { bitmap: Bitmap? ->
         if (bitmap != null && currentUser != null) {
             val newAvatarUri = saveImageToInternalStorage(bitmap)
-
             findViewById<ImageView>(R.id.imageAvatar).setImageBitmap(bitmap)
 
-            db.updateUserAvatar(currentUser!!.id, newAvatarUri)
-            Toast.makeText(this, "Аватар обновлен", Toast.LENGTH_SHORT).show()
+            Thread {
+                db.updateUserAvatar(currentUser!!.id, newAvatarUri)
+                runOnUiThread {
+                    Toast.makeText(this, "Аватар обновлен", Toast.LENGTH_SHORT).show()
+                }
+            }.start()
         }
     }
 
@@ -39,48 +42,63 @@ class ProfileActivity : AppCompatActivity() {
         val session = SessionManager(this)
 
         val userId = intent.getIntExtra("user_id", -1)
-        currentUser = db.getUserById(userId)
 
-        if (currentUser == null) {
-            finish()
-            return
-        }
-
-        findViewById<TextView>(R.id.textFullName).text = currentUser!!.fullName
-        findViewById<TextView>(R.id.textLogin).text = "Логин: ${currentUser!!.login}"
-        findViewById<TextView>(R.id.textBirthDate).text = "Дата рождения: ${currentUser!!.birthDate}"
-        findViewById<TextView>(R.id.textGender).text = "Пол: ${currentUser!!.gender}"
-        findViewById<TextView>(R.id.textIsAdmin).text =
-            if (currentUser!!.isAdmin) "Администратор" else "Обычный пользователь"
-
+        val textFullName = findViewById<TextView>(R.id.textFullName)
+        val textLogin = findViewById<TextView>(R.id.textLogin)
+        val textBirthDate = findViewById<TextView>(R.id.textBirthDate)
+        val textGender = findViewById<TextView>(R.id.textGender)
+        val textIsAdmin = findViewById<TextView>(R.id.textIsAdmin)
         val imageAvatar = findViewById<ImageView>(R.id.imageAvatar)
-        if (currentUser!!.avatarUri.isNotEmpty()) {
-            try {
-                imageAvatar.setImageURI(Uri.parse(currentUser!!.avatarUri))
-            } catch (_: Exception) {}
-        }
-
-        val isSelf = session.getUserId() == currentUser!!.id
-        if (isSelf) {
-            imageAvatar.setOnClickListener {
-                takePicture.launch(null)
-            }
-        }
-
         val buttonMakeAdmin = findViewById<Button>(R.id.buttonMakeAdmin)
         val buttonBack = findViewById<Button>(R.id.buttonBack)
 
-        val currentIsAdmin = session.isAdmin()
+        Thread {
+            val user = db.getUserById(userId)
+            currentUser = user
 
-        if (currentIsAdmin && !isSelf && !currentUser!!.isAdmin) {
-            buttonMakeAdmin.visibility = View.VISIBLE
-        }
+            textFullName.post {
+                if (user == null) {
+                    finish()
+                    return@post
+                }
 
-        buttonMakeAdmin.setOnClickListener {
-            db.setAdmin(currentUser!!.id, true)
-            Toast.makeText(this, "${currentUser!!.fullName} теперь администратор", Toast.LENGTH_SHORT).show()
-            finish()
-        }
+                textFullName.text = user.fullName
+                textLogin.text = "Логин: ${user.login}"
+                textBirthDate.text = "Дата рождения: ${user.birthDate}"
+                textGender.text = "Пол: ${user.gender}"
+                textIsAdmin.text = if (user.isAdmin) "Администратор" else "Обычный пользователь"
+
+                if (user.avatarUri.isNotEmpty()) {
+                    try {
+                        imageAvatar.setImageURI(Uri.parse(user.avatarUri))
+                    } catch (_: Exception) {}
+                }
+
+                val currentIsAdmin = session.isAdmin()
+                val isSelf = session.getUserId() == user.id
+
+                if (currentIsAdmin && !isSelf && !user.isAdmin) {
+                    buttonMakeAdmin.visibility = View.VISIBLE
+                }
+
+                if (isSelf) {
+                    imageAvatar.setOnClickListener {
+                        takePicture.launch(null)
+                    }
+                }
+
+                buttonMakeAdmin.setOnClickListener {
+                    buttonMakeAdmin.isEnabled = false
+                    Thread {
+                        db.setAdmin(user.id, true)
+                        buttonMakeAdmin.post {
+                            Toast.makeText(this@ProfileActivity, "${user.fullName} теперь администратор", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }.start()
+                }
+            }
+        }.start()
 
         buttonBack.setOnClickListener { finish() }
     }

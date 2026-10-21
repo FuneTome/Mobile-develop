@@ -34,16 +34,23 @@ class WelcomeActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val user = db.getUserByLogin(login)
-            if (user == null || user.pass != pass) {
-                Toast.makeText(this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            buttonLogin.isEnabled = false
 
-            session.saveUser(user.id, user.login, user.isAdmin)
-            Log.d("WelcomeActivity", "Вход: ${user.login}, admin=${user.isAdmin}")
-            startActivity(Intent(this, MenuActivity::class.java))
-            finish()
+            Thread {
+                val user = db.getUserByLogin(login)
+
+                buttonLogin.post {
+                    buttonLogin.isEnabled = true
+                    if (user == null || user.pass != pass) {
+                        Toast.makeText(this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show()
+                    } else {
+                        session.saveUser(user.id, user.login, user.isAdmin)
+                        Log.d("WelcomeActivity", "Вход: ${user.login}, admin=${user.isAdmin}")
+                        startActivity(Intent(this, MenuActivity::class.java))
+                        finish()
+                    }
+                }
+            }.start()
         }
 
         buttonGoRegister.setOnClickListener {

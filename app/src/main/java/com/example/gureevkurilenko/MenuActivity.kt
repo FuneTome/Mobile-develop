@@ -15,23 +15,32 @@ class MenuActivity : AppCompatActivity() {
 
         val session = SessionManager(this)
         val db = DatabaseHandler(this)
-        val user = db.getUserById(session.getUserId())
 
-        if (user == null) {
-            startActivity(Intent(this, WelcomeActivity::class.java))
-            finish()
-            return
-        }
-
-        findViewById<TextView>(R.id.textWelcome).text = "Привет, ${user.fullName}"
-
+        val textWelcome = findViewById<TextView>(R.id.textWelcome)
         val buttonAdmin = findViewById<Button>(R.id.buttonAdmin)
-        if (user.isAdmin) buttonAdmin.visibility = View.VISIBLE
 
-        findViewById<Button>(R.id.buttonProfile).setOnClickListener {
-            val i = Intent(this, ProfileActivity::class.java)
-            i.putExtra("user_id", user.id)
-            startActivity(i)
+        Thread {
+            val user = db.getUserById(session.getUserId())
+
+            textWelcome.post {
+                if (user == null) {
+                    startActivity(Intent(this, WelcomeActivity::class.java))
+                    finish()
+                } else {
+                    textWelcome.text = "Привет, ${user.fullName}"
+                    if (user.isAdmin) buttonAdmin.visibility = View.VISIBLE
+
+                    findViewById<Button>(R.id.buttonProfile).setOnClickListener {
+                        val i = Intent(this, ProfileActivity::class.java)
+                        i.putExtra("user_id", user.id)
+                        startActivity(i)
+                    }
+                }
+            }
+        }.start()
+
+        findViewById<Button>(R.id.buttonGame).setOnClickListener {
+            startActivity(Intent(this, GameActivity::class.java))
         }
 
         buttonAdmin.setOnClickListener {
@@ -50,10 +59,6 @@ class MenuActivity : AppCompatActivity() {
             session.logout()
             startActivity(Intent(this, WelcomeActivity::class.java))
             finish()
-        }
-
-        findViewById<Button>(R.id.buttonGame).setOnClickListener {
-            startActivity(Intent(this, GameActivity::class.java))
         }
     }
 }

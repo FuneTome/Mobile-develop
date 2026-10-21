@@ -14,6 +14,15 @@ class DatabaseHandler(context: Context) :
         private const val DATABASE_NAME = "Users.db"
     }
 
+    //
+    private fun simulateDelay() {
+        try {
+            Thread.sleep(1500)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+    }
+
     override fun onCreate(db: SQLiteDatabase) {
         val create = "CREATE TABLE ${DBContract.UserEntry.TABLE_NAME} (" +
                 "${DBContract.UserEntry.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -33,6 +42,7 @@ class DatabaseHandler(context: Context) :
     }
 
     fun addUser(user: User): Long {
+        simulateDelay()
         val values = ContentValues().apply {
             put(DBContract.UserEntry.COLUMN_LOGIN, user.login)
             put(DBContract.UserEntry.COLUMN_PASS, user.pass)
@@ -46,6 +56,7 @@ class DatabaseHandler(context: Context) :
     }
 
     fun getUserByLogin(login: String): User? {
+        simulateDelay()
         val cursor = readableDatabase.query(
             DBContract.UserEntry.TABLE_NAME, null,
             "${DBContract.UserEntry.COLUMN_LOGIN} = ?", arrayOf(login),
@@ -58,6 +69,7 @@ class DatabaseHandler(context: Context) :
     }
 
     fun getUserById(id: Int): User? {
+        simulateDelay()
         val cursor = readableDatabase.query(
             DBContract.UserEntry.TABLE_NAME, null,
             "${DBContract.UserEntry.COLUMN_ID} = ?", arrayOf(id.toString()),
@@ -70,6 +82,7 @@ class DatabaseHandler(context: Context) :
     }
 
     fun getAllUsers(): List<User> {
+        simulateDelay()
         val list = mutableListOf<User>()
         val cursor = readableDatabase.rawQuery(
             "SELECT * FROM ${DBContract.UserEntry.TABLE_NAME}", null
@@ -82,6 +95,7 @@ class DatabaseHandler(context: Context) :
     }
 
     fun getUserCount(): Int {
+        simulateDelay()
         val cursor = readableDatabase.rawQuery(
             "SELECT COUNT(*) FROM ${DBContract.UserEntry.TABLE_NAME}", null
         )
@@ -92,6 +106,7 @@ class DatabaseHandler(context: Context) :
     }
 
     fun setAdmin(id: Int, isAdmin: Boolean) {
+        simulateDelay()
         val values = ContentValues().apply {
             put(DBContract.UserEntry.COLUMN_IS_ADMIN, if (isAdmin) 1 else 0)
         }

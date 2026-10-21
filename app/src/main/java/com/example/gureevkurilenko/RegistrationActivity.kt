@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import java.util.Calendar
 
 class RegistrationActivity : AppCompatActivity() {
-
     private lateinit var db: DatabaseHandler
     private var avatarUri: String = ""
 
@@ -60,29 +59,36 @@ class RegistrationActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (db.getUserByLogin(login) != null) {
-                Toast.makeText(this, "Логин уже занят", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            buttonRegister.isEnabled = false
 
-            val isFirstUser = db.getUserCount() == 0
+            Thread {
+                if (db.getUserByLogin(login) != null) {
+                    buttonRegister.post {
+                        buttonRegister.isEnabled = true
+                        Toast.makeText(this, "Логин уже занят", Toast.LENGTH_SHORT).show()
+                    }
+                    return@Thread
+                }
 
-            val user = User(
-                login = login, pass = pass, fullName = fullName,
-                birthDate = birthDate, gender = gender,
-                avatarUri = avatarUri, isAdmin = isFirstUser
-            )
+                val isFirstUser = db.getUserCount() == 0
+                val user = User(
+                    login = login, pass = pass, fullName = fullName,
+                    birthDate = birthDate, gender = gender,
+                    avatarUri = avatarUri, isAdmin = isFirstUser
+                )
+                db.addUser(user)
 
-            db.addUser(user)
-            Log.d("RegistrationActivity", "Зарегистрирован $login, admin=$isFirstUser")
-
-            Toast.makeText(
-                this,
-                if (isFirstUser) "Вы первый — вы администратор"
-                else "Регистрация успешна",
-                Toast.LENGTH_LONG
-            ).show()
-            finish()
+                buttonRegister.post {
+                    buttonRegister.isEnabled = true
+                    Log.d("RegistrationActivity", "Зарегистрирован $login, admin=$isFirstUser")
+                    Toast.makeText(
+                        this,
+                        if (isFirstUser) "Вы первый — вы администратор" else "Регистрация успешна",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    finish()
+                }
+            }.start()
         }
     }
 
